@@ -24,6 +24,11 @@ public class Hero extends animatedThing {
 
     // jump methods
     //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     *
+     * @param hero1
+     */
     public void jumpUp( Hero hero1){
         hero1.setAttitude(1);
         // hero jumpUp image
