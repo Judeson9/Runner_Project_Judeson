@@ -316,7 +316,7 @@ public class GameScene extends Scene {
             hart3.getImageView().setViewport(rectangleHart3);
             //----------------------------------------------------------------------------------------------------------
 
-            // instructions given during the game
+            // instructions given during the game - messages
             //----------------------------------------------------------------------------------------------------------
             if (hero1.getLifePoint()<0) {
                 hero1.setVx(0);
