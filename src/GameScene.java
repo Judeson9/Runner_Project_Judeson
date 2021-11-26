@@ -236,6 +236,12 @@ public class GameScene extends Scene {
             setOnKeyPressed((event2) -> {
                 if (event2.getCode() == KeyCode.S)
                 {System.out.println("start");
+                    foe1.setOffsetXFrame(300);
+                    foe2.setOffsetXFrame(600);
+                    foe1.getImageView().setX(foe1.getOffsetXFrame());
+                    foe2.getImageView().setX(foe2.getOffsetXFrame());
+                    System.out.println("vhvhvhhvh"+" "+foe1.getImageView().getX());
+                    System.out.println("vhvhvhuuuuu :"+" "+foe2.getImageView().getX());
                     start.getImageView().setX(-1200);
                     hero1.setVx(5);
                     hero1.setAttitude(0);}
@@ -251,6 +257,7 @@ public class GameScene extends Scene {
                     this.m = 8;
                     // images positions
                     //--------------------------------------------------------------------------------------------------
+                    hero1.setLifePoint(hero1.getInitLifePoint());
                     start.getImageView().setX(0);
                     gameOver.getImageView().setX(-1200);
                     // hero update
@@ -260,7 +267,6 @@ public class GameScene extends Scene {
                     hero1.getImageView().setX(hero1.getOffsetXFrame());
                     hero1.setOffsetYFrame(245);
                     hero1.getImageView().setY(hero1.getOffsetYFrame());
-                    hero1.setLifePoint(hero1.getInitLifePoint());
                     hero1.getImageView().opacityProperty().setValue(1);
                     hero1.setLevel(0);
                     hero1.setInvincible(0);
@@ -269,15 +275,11 @@ public class GameScene extends Scene {
                     // staticThings update (foes + harts)
                     //--------------------------------------------------------------------------------------------------
                     hart1.setX(30); hart2.setX(30); hart3.setX(30);
-                    this.rd1 = 300;
-                    this.rd2 = 600;
-                    foe1.setOffsetXFrame(rd1);
-                    foe1.getImageView().setX(foe1.getOffsetXFrame());
-                    foe2.setOffsetXFrame(rd2);
-                    foe2.getImageView().setX(foe2.getOffsetXFrame());
                     this.rep=0;
                     this.prevRep=0;
                     //--------------------------------------------------------------------------------------------------
+                    showMessage.setText("Press S to Start DBZRun");
+                    showMessage.getText();
                 }
             });
             //----------------------------------------------------------------------------------------------------------
