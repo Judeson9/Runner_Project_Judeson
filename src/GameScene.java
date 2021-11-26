@@ -183,7 +183,7 @@ public class GameScene extends Scene {
             // manage the X axis
             rep = (int) camera.getX() / 800;
             // give a random value to foes
-            if (prevRep+1 == rep) {
+            if (prevRep+1 == rep && hero1.getVx()!=0) {
                 this.rd1 = Math.random()*650+75;
                 this.rd2 = Math.random()*650+75;
                 this.rd3 = Math.random()*600+150;
@@ -220,7 +220,7 @@ public class GameScene extends Scene {
 
             // verification : hero doesn't hit a foe
             //----------------------------------------------------------------------------------------------------------
-            if (hero1.getInvincible() == 0) {
+            if (hero1.getInvincible() == 0 && hero1.getVx()!=0) {
                 prevLifePoint = hero1.getLifePoint();
                 if (hero1.getOffsetXFrame()%1600 <= 800) {
                     foe1.rectangle2DGetHitBox(hero1, foe1);
@@ -242,33 +242,45 @@ public class GameScene extends Scene {
             // Press R to Restart and to init all parameters
             //----------------------------------------------------------------------------------------------------------
             setOnKeyPressed((event2) -> {
-                if (event2.getCode() == KeyCode.S)
+                if (event2.getCode() == KeyCode.S )
                 {System.out.println("start");
+                    // animatedThings update (foes)
+                    //--------------------------------------------------------------------------------------------------
                     foe1.setOffsetXFrame(300);
                     foe2.setOffsetXFrame(600);
                     foe1.getImageView().setX(foe1.getOffsetXFrame());
                     foe2.getImageView().setX(foe2.getOffsetXFrame());
+                    // images positions
+                    //--------------------------------------------------------------------------------------------------
                     start.getImageView().setX(-1200);
                     restart.getImageView().setY(0);
+                    // hero update
+                    //--------------------------------------------------------------------------------------------------
                     hero1.setVx(5);
+                    hero1.setInvincible(0);
+                    hero1.setInvincibility(25000000);
                     hero1.setAttitude(0);}
+                //------------------------------------------------------------------------------------------------------
                 if (event2.getCode() == KeyCode.SPACE)
                 {System.out.println("Jump");
                     this.flagJump = 1;
                     if (hero1.getAttitude() == 0) {hero1.setAttitude(1);m += 0.2 * hero1.getVx()/5;}}
                 if (event2.getCode() == KeyCode.G)
                 {System.out.println("Restart");
-                    hero1.setLifePoint(-1);}
+                    hero1.setLifePoint(-1);
+                    this.flagJump = 1;}
                 if (event2.getCode() == KeyCode.R && hero1.getLifePoint()<0){
                     this.flagJump = 0;
                     this.m = 8;
+                    this.rep=0;
+                    this.prevRep=0;
                     // images positions
                     //--------------------------------------------------------------------------------------------------
-                    hero1.setLifePoint(hero1.getInitLifePoint());
                     start.getImageView().setX(0);
                     gameOver.getImageView().setX(-1200);
                     // hero update
                     //--------------------------------------------------------------------------------------------------
+                    hero1.setLifePoint(hero1.getInitLifePoint());
                     hero1.setVx(0);
                     hero1.setOffsetXFrame(100);
                     hero1.getImageView().setX(hero1.getOffsetXFrame());
@@ -276,14 +288,12 @@ public class GameScene extends Scene {
                     hero1.getImageView().setY(hero1.getOffsetYFrame());
                     hero1.getImageView().opacityProperty().setValue(1);
                     hero1.setLevel(0);
-                    hero1.setInvincible(0);
-                    hero1.setInvincibility(25000000);
                     //--------------------------------------------------------------------------------------------------
-                    // staticThings update (foes + harts)
+                    // animatedThings update (harts)
                     //--------------------------------------------------------------------------------------------------
-                    hart1.setX(30); hart2.setX(30); hart3.setX(30);
-                    this.rep=0;
-                    this.prevRep=0;
+                    hart1.setX(30);
+                    hart2.setX(30);
+                    hart3.setX(30);
                     //--------------------------------------------------------------------------------------------------
                     showMessage.setText("Press S to Start DBZRun");
                     showMessage.getText();
@@ -315,6 +325,10 @@ public class GameScene extends Scene {
                 gameOver.getImageView().setX(0); // show Game Over
                 restartMessage.setText(" ");
                 restartMessage.getText();
+                showMessage.setX(320);
+                showMessage.setY(380);
+                showMessage.setFont(new Font(15));
+                showMessage.setFill(Color.WHITE);
                 showMessage.setText("Press R to Restart");
                 showMessage.getText();
             }
@@ -322,6 +336,10 @@ public class GameScene extends Scene {
                 restartMessage.setText("Press G");
                 restartMessage.getText();
                 if(hero1.getVx()==0){
+                    showMessage.setX(320);
+                    showMessage.setY(380);
+                    showMessage.setFont(new Font(15));
+                    showMessage.setFill(Color.WHITE);
                     showMessage.setText("Press S to Start DBZRun");
                     showMessage.getText();
                 }
