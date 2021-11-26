@@ -30,7 +30,7 @@ public class Hero extends animatedThing {
     //------------------------------------------------------------------------------------------------------------------
     public Hero(String fileName, double x, double y, double sizeXWindow, double sizeYWindow, double offsetXFrame, double offsetYFrame){
         super(fileName, x, y, sizeXWindow, sizeYWindow, offsetXFrame, offsetYFrame);
-        this.lifePoint = 0;
+        this.lifePoint = 3;
         this.initLifePoint = this.lifePoint;
         this.heightJump = 64;
     }
