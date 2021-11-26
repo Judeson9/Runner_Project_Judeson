@@ -13,7 +13,17 @@
  // Hero(String fileName, position on the rectangle -> {double x, double y} , double sizeXWindow, double sizeYWindow, position on gameScene -> {double offsetXFrame , double offsetYFrame})
  // GameScene(Group entire window)
  // Foe(String fileName, double x, double y, double sizeXWindow, double sizeYWindow, double offsetXFrame, double offsetYFrame)
- -- Additional Comments: none
+ -- Additional Comments: none*/
+
+/**---------------------------------------------------------------------------------
+ Game Rules : The hero Hero1 has to avoid the foes (Feezer, Cell, Buu) by jumping.
+              Hero1 has only 3 lives during all the game. At each collision with foe, Hero1 looses 1/3 of life.
+              Each 2400 pixels, Hero1 speed increases ( => level+=1 ).
+              All commands :  // Press S to Start
+                             // Press Space to Jump
+                            // Press G to Give up
+                           // Press R to Restart
+              Let's play now ! Good Luck !!!!!
  */
 
 // imported libraries
