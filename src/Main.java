@@ -23,6 +23,7 @@
                              // Press Space to Jump
                             // Press G to Give up
                            // Press R to Restart
+              Level Record up to now : 25
               Let's play now ! Good Luck !!!!!
  */
 
