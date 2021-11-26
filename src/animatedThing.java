@@ -1,3 +1,15 @@
+/**----------------------------------------------------------------------------------
+ -- Company: ENSEA Cergy
+ -- Engineer: ANTHONY FERNANDO Judeson
+ -- Last Update : 25.11.2021
+ -- Project Name: Runner_Project
+ -- Class Name: animatedThing
+ -- Class Methods : update(long time, Hero hero1,Camera camera)
+ -- Description: This class creates animated things for our games like foes/hero
+ -- Parent class: none
+ -- Additional Comments: none
+ */
+
 // imported libraries
 //----------------------------------------------------------------------------------------------------------------------
 import javafx.geometry.Rectangle2D;
@@ -9,16 +21,16 @@ public class animatedThing {
 
     // variables
     //------------------------------------------------------------------------------------------------------------------
-    // origins on the animated thing image
+    // origins pixels of the animated thing image
     private double x;
     private double y;
-    // size window of animated thing image
+    // animated thing image's size window from the origins pixels
     private double sizeXWindow;
     private double sizeYWindow;
-    // speed of animated thing
+    // animated thing's speed
     private double Vx ;
     private double Vy ;
-    // position of animated thing
+    // animated thing's position
     private double offsetXFrame;
     private double offsetYFrame;
     // gravity
@@ -90,12 +102,17 @@ public class animatedThing {
     public void setSizeYWindow(double sizeYWindow) { this.sizeYWindow = sizeYWindow; }
     //------------------------------------------------------------------------------------------------------------------
 
-    // update hero
+    /**
+     * update method : updates the hero x position and the hero movement every dt time.
+     * @param time time from the gameScene's timer
+     * @param hero1 our hero from gameScene
+     * @param camera camera from gameScene
+     */
     //------------------------------------------------------------------------------------------------------------------
     public void update(long time, Hero hero1,Camera camera){
         this.dt = time - this.prevTime;
         if(dt > 9e7) {
-            // hero runs -> set the new x position
+            // hero runs -> sets the new x position
             (hero1.getImageView()).setX(hero1.getOffsetXFrame()-camera.getX());
             // run effect
             if (hero1.getAttitude() == 0) {

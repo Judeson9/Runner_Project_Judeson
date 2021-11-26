@@ -1,3 +1,15 @@
+/**----------------------------------------------------------------------------------
+ -- Company: ENSEA Cergy
+ -- Engineer: ANTHONY FERNANDO Judeson
+ -- Last Update : 25.11.2021
+ -- Project Name: Runner_Project
+ -- Class Name: gameScene
+ -- Class Methods :
+ -- Description: This class creates the game scene, it's also the "main" class for this project
+ -- Parent class: none
+ -- Additional Comments: gameScene contains myTIMER class : myTimer class updates all parameters of the game
+ */
+
 // imported libraries
 //----------------------------------------------------------------------------------------------------------------------
 import javafx.animation.AnimationTimer;
@@ -68,7 +80,7 @@ public class GameScene extends Scene {
         //--------------------------------------------------------------------------------------------------------------
         this.hero1 = new Hero("img/heros.png", 0, 0, 85, 100, 0, 245);
         //--------------------------------------------------------------------------------------------------------------
-        // foe png
+        // foe gif
         //--------------------------------------------------------------------------------------------------------------
         this.foeGroup = new ArrayList<Foe>();
         this.foe1 = new Foe("img/freezer.gif", 30, 30, 125, 80, 200, 220);
@@ -96,7 +108,7 @@ public class GameScene extends Scene {
         this.hart3.getImageView().setFitHeight(hartSize);
         this.hart3.getImageView().setFitWidth(hartSize);
         //--------------------------------------------------------------------------------------------------------------
-        // start & gameOver png
+        // start & gameOver gif
         //--------------------------------------------------------------------------------------------------------------
         this.start = new Foe ("img/start.gif",0,0,480,352,0,0);
         this.start.getImageView().setFitHeight(400);
@@ -110,11 +122,11 @@ public class GameScene extends Scene {
         this.showLevel = new Text(10,60,"Level : "+ this.hero1.getLevel());
         this.showLevel.setFont(new Font(20));
         this.showLevel.setFill(Color.BLACK);
-        this.showMessage = new Text(325,380,"Press S to start RunDBZ");
+        this.showMessage = new Text(320,380,"Press S to Start DBZRun");
         this.showMessage.setFont(new Font(15));
         this.showMessage.setFill(Color.WHITE);
         //--------------------------------------------------------------------------------------------------------------
-        // to display all the pngs and texts
+        // to display all the pngs, gifs and texts
         //--------------------------------------------------------------------------------------------------------------
         root.getChildren().addAll(
                 this.staticThing0.getImageView(), this.staticThing1.getImageView(), this.staticThing2.getImageView(),
@@ -145,6 +157,7 @@ public class GameScene extends Scene {
         private int prevLifePoint;
         private int rep = 0;
         private int prevRep = 0;
+        private int nbJump = 0; //  indicates the number of jump done
         //--------------------------------------------------------------------------------------------------------------
 
         @Override
@@ -152,15 +165,16 @@ public class GameScene extends Scene {
 
             // display static things (landscape and foes)
             //----------------------------------------------------------------------------------------------------------
-            // manage the Y axis
             staticThing0.getImageView().setViewport(new Rectangle2D(0, camera.getY(), 800, 400));
             staticThing1.getImageView().setViewport(new Rectangle2D(0, camera.getY(), 800, 400));
             staticThing2.getImageView().setViewport(new Rectangle2D(0, camera.getY(), 800, 400));
+            // manage the Y axis
             foe1.getImageView().setY(foe1.getOffsetYFrame() - camera.getY());
             foe2.getImageView().setY(foe2.getOffsetYFrame() - camera.getY());
             foe3.getImageView().setY(foe3.getOffsetYFrame() - camera.getY());
             // manage the X axis
             rep = (int) camera.getX() / 800;
+            // give a random value to foes
             if (prevRep+1 == rep) {
                 rd1 = Math.random()*650+75;
                 rd2 = Math.random()*650+75;
@@ -170,6 +184,8 @@ public class GameScene extends Scene {
                 prevRep = rep;
             }
             staticThing0.getImageView().setX(-800 - camera.getX());
+            // staticThing1 and staticThing2 are my landscapes images.
+            // They are displayed one after the other until the game over.
             if (Math.floorMod(rep, 2) == 0) {
                 foe3.setOffsetXFrame(rd3);
                 staticThing1.getImageView().setX(800 * rep - camera.getX());
@@ -209,8 +225,12 @@ public class GameScene extends Scene {
                 }
             }
 
+            // inputs from player
             //----------------------------------------------------------------------------------------------------------
-            // input from user
+            // Press S to Start the game
+            // Press Space to Jump
+            // Press G to Give up the game
+            // Press R to Restart and to init all parameters
             //----------------------------------------------------------------------------------------------------------
             setOnKeyPressed((event2) -> {
                 if (event2.getCode() == KeyCode.S)
@@ -220,10 +240,13 @@ public class GameScene extends Scene {
                     hero1.setAttitude(0);}
                 if (event2.getCode() == KeyCode.SPACE)
                 {System.out.println("Jump");
+                    this.nbJump += 1;
                     if (hero1.getAttitude() == 0) {hero1.setAttitude(1);m += 0.2 * hero1.getVx()/5;}}
-                if (event2.getCode() == KeyCode.R)
-                {System.out.println("Restart");hero1.setLifePoint(-1);}
-                if (event2.getCode() == KeyCode.K && hero1.getLifePoint()<0){
+                if (event2.getCode() == KeyCode.G)
+                {System.out.println("Restart");
+                    hero1.setLifePoint(-1);}
+                if (event2.getCode() == KeyCode.R && hero1.getLifePoint()<0){
+                    this.nbJump = 0;
                     // images positions
                     //--------------------------------------------------------------------------------------------------
                     start.getImageView().setX(0);
@@ -254,7 +277,7 @@ public class GameScene extends Scene {
             });
             //----------------------------------------------------------------------------------------------------------
 
-            // life
+            // display lives
             //----------------------------------------------------------------------------------------------------------
             if (hero1.getLifePoint()>=6) { hart3.displayHart(hero1,hart3);}
             if (hero1.getLifePoint()>=3 & hero1.getLifePoint()<=5) { hart3.setX(485);hart2.displayHart(hero1,hart2);}
@@ -269,23 +292,31 @@ public class GameScene extends Scene {
             hart3.getImageView().setViewport(rectangleHart3);
             //----------------------------------------------------------------------------------------------------------
 
-            //  game Over
+            // instructions given during the game
             //----------------------------------------------------------------------------------------------------------
             if (hero1.getLifePoint()<0) {
                 hero1.setVx(0);
                 hero1.setAttitude(3);
-                gameOver.getImageView().setX(0);
-                showMessage.setText("Press K to restart");
+                gameOver.getImageView().setX(0); // show Game Over
+                showMessage.setText("Press R to Restart");
                 showMessage.getText();
             }
             else {
                 if(hero1.getVx()==0){
-                    showMessage.setText("Press S to start RunDBZ");
+                    showMessage.setText("Press S to Start DBZRun");
+                    showMessage.getText();
+                }
+                else if(hero1.getVx()!=0 & nbJump==0){
+                    showMessage.setText("Press Space to Jump");
+                    showMessage.getText();
+                }
+                else if(hero1.getVx()!=0 & nbJump==3){
+                    showMessage.setText("Press G to Give up");
                     showMessage.getText();
                 }
                 else{
-                    showMessage.setText(" ");
-                    showMessage.getText();
+                showMessage.setText(" ");
+                showMessage.getText();
                 }
             }
             //----------------------------------------------------------------------------------------------------------
@@ -296,9 +327,9 @@ public class GameScene extends Scene {
             hero1.getImageView().setViewport(rectangle2D);
             //----------------------------------------------------------------------------------------------------------
 
-            // hero jumps
+            // jump
             //----------------------------------------------------------------------------------------------------------
-            // hero jump up
+            // hero jumps up
             if (hero1.getAttitude() == 1) {
                 a = -hero1.getHeightJump()+ m * m;
                 hero1.setGravity(a);
@@ -310,7 +341,7 @@ public class GameScene extends Scene {
                 }
                 m -= 0.2 * hero1.getVx()/5 ;;
             }
-            // hero jump down
+            // hero jumps down
             if (hero1.getAttitude() == 2) {
                 a = -hero1.getHeightJump() + m * m;
                 hero1.setGravity(a);
@@ -326,7 +357,7 @@ public class GameScene extends Scene {
             hero1.setGravity(hero1.getInitGravity());
             //----------------------------------------------------------------------------------------------------------
 
-            // update
+            // camera and hero classes update
             //----------------------------------------------------------------------------------------------------------
             camera.update(time, hero1);
             hero1.update(time, hero1, camera);

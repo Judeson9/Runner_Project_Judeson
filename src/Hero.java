@@ -1,9 +1,23 @@
+/**----------------------------------------------------------------------------------
+ -- Company: ENSEA Cergy
+ -- Engineer: ANTHONY FERNANDO Judeson
+ -- Last Update : 25.11.2021
+ -- Project Name: Runner_Project
+ -- Class Name: Hero
+ -- Class Methods :  jumpUp( Hero hero1)
+                   / jumpDown( Hero hero1)
+                   / isInvincibility(Hero hero1, int invTime)
+ -- Description: This class creates our hero for the game with all his parameters
+ -- Parent class: animatedThing
+ -- Additional Comments: none
+ */
+
 public class Hero extends animatedThing {
 
     // variables
     //------------------------------------------------------------------------------------------------------------------
     // variables for isInvincibility method
-    private int invincible = 0;
+    private int invincible = 0; // invincible = 0 -> hero is not invincible / invincible = 1 -> hero is invincible
     private int invincibility = 25000000;
     // hero configuration
     private int lifePoint ;
@@ -22,13 +36,14 @@ public class Hero extends animatedThing {
     }
     //------------------------------------------------------------------------------------------------------------------
 
-    // jump methods
-    //------------------------------------------------------------------------------------------------------------------
-
     /**
-     *
-     * @param hero1
+     * Hero's jump is separates in 2 methods : jumpUp & jumpDown
+     * jumpUp method : displays the hero jumpUp image and adds to the hero's initial x position
+     *                 the updated gravity value (from the gameScene class).
+     *                 NB : Gravity value increases from an init value (negative value) to 0.
+     * @param hero1 our hero from gameScene
      */
+    //------------------------------------------------------------------------------------------------------------------
     public void jumpUp( Hero hero1){
         hero1.setAttitude(1);
         // hero jumpUp image
@@ -38,6 +53,13 @@ public class Hero extends animatedThing {
         hero1.setOffsetYFrame(250 + hero1.getGravity());
         (hero1.getImageView()).setY(hero1.getOffsetYFrame());
     }
+    /**
+     * Hero's jump is separates in 2 methods : jumpUp & jumpDown
+     * jumpDown method : displays the hero jumpUp image and adds to the hero's initial x position
+     *                   the updated gravity value (from the gameScene class).
+     *                   NB : Gravity value decreases from 0 to an init value (negative value).
+     * @param hero1 our hero from gameScene
+     */
     public void jumpDown( Hero hero1){
         hero1.setAttitude(2);
         // hero jumpDown image
@@ -49,7 +71,16 @@ public class Hero extends animatedThing {
     }
     //------------------------------------------------------------------------------------------------------------------
 
-    // invincibility methods
+    //
+
+    /**
+     * invincible = 0 -> hero is not invincible / invincible = 1 -> hero is invincible
+     * isInvincibility method : hero is invincible for dt time,
+     *                          this method changes hero's opacity ( = means that is invincible)
+     *                          and sets to 0 invincible at the end of invincibility time
+     * @param hero1 our hero from gameScene
+     * @param invTime time past from the previous called (gameScene)
+     */
     //------------------------------------------------------------------------------------------------------------------
     public void isInvincibility(Hero hero1, int invTime){
         this.invincibility -= invTime;

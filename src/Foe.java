@@ -1,3 +1,18 @@
+/**----------------------------------------------------------------------------------
+ -- Company: ENSEA Cergy
+ -- Engineer: ANTHONY FERNANDO Judeson
+ -- Last Update : 25.11.2021
+ -- Project Name: Runner_Project
+ -- Class Name: Foe
+ -- Class Methods :  rectangle2DGetHitBox(Hero hero1, Foe foe)
+                    / distanceFoe(double rdA, double rdB)
+                    / displayHart(Hero hero1,Foe hart)
+ -- Description: This class creates foes objects.
+ -- Parent class: animatedThing
+ -- Additional Comments: Foe object is used in the code to create foes, harts (hero lives).
+                         It's also used for start and game over animation.
+ */
+
 // imported libraries
 //----------------------------------------------------------------------------------------------------------------------
 import static java.lang.Math.abs;
@@ -8,8 +23,8 @@ public class Foe extends animatedThing{
     // variables
     //------------------------------------------------------------------------------------------------------------------
     // variables for distanceFoe method
-    private double rdA;
-    private double rdB;
+    private double rdA; // random number given by Math.random() method
+    private double rdB; // random number given by Math.random() method
     //------------------------------------------------------------------------------------------------------------------
 
     // constructor
@@ -19,7 +34,11 @@ public class Foe extends animatedThing{
     }
     //------------------------------------------------------------------------------------------------------------------
 
-    // collision
+    /**
+     * rectangle2DGetHitBox method : if hero hit a foe, hero looses a life point
+     * @param hero1 our hero from gameScene
+     * @param foe   foes from gameScene
+     */
     //------------------------------------------------------------------------------------------------------------------
     public void rectangle2DGetHitBox(Hero hero1, Foe foe) {
         if (abs((hero1.getOffsetXFrame()-(int)(hero1.getOffsetXFrame()/800)*800)-foe.getOffsetXFrame()) < 25 && hero1.getOffsetYFrame() > 240) {
@@ -31,7 +50,11 @@ public class Foe extends animatedThing{
     }
     //------------------------------------------------------------------------------------------------------------------
 
-    // manage distance between 2 foes -> if 2 foes are to close, distanceFoe method add distance between them
+    /**
+     * distanceFoe methods : if foes are too closed from each other, this method adds distance between them
+     * @param rdA random number given by Math.random() method
+     * @param rdB random number given by Math.random() method
+     */
     //------------------------------------------------------------------------------------------------------------------
     public void distanceFoe(double rdA, double rdB){
         if (abs(rdA-rdB)<250) {
@@ -45,6 +68,14 @@ public class Foe extends animatedThing{
     //------------------------------------------------------------------------------------------------------------------
 
     // display harts -> each hart equals to 3 hero.lifePoints
+
+    /**
+     * each hart equals to 3 hero.lifePoint
+     * displayHart method : this method displays from a full hero's hart to an empty hero's hart
+     *                      as long as he looses a life point
+     * @param hero1 our hero from gameScene
+     * @param hart  harts from gameScene
+     */
     //------------------------------------------------------------------------------------------------------------------
     public void displayHart(Hero hero1,Foe hart){
         if(hero1.getLifePoint()%3 == 2) {hart.setX(30);}
