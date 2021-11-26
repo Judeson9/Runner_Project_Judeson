@@ -52,9 +52,11 @@ public class GameScene extends Scene {
     // gameOver & start
     private Foe gameOver;
     private Foe start;
+    private Foe restart;
     // text
     private Text showLevel;
     private Text showMessage;
+    private Text restartMessage;
     //------------------------------------------------------------------------------------------------------------------
 
 
@@ -105,14 +107,17 @@ public class GameScene extends Scene {
         this.hart3.getImageView().setFitHeight(hartSize);
         this.hart3.getImageView().setFitWidth(hartSize);
         //--------------------------------------------------------------------------------------------------------------
-        // start & gameOver gif
+        // start & gameOver gif & restart
         //--------------------------------------------------------------------------------------------------------------
-        this.start = new Foe ("img/start.gif",0,0,480,352,0,0);
+        this.start = new Foe("img/start.gif",0,0,480,352,0,0);
         this.start.getImageView().setFitHeight(400);
         this.start.getImageView().setFitWidth(800);
-        this.gameOver = new Foe ("img/gameOver.gif",0,0,600,300,-1200,0);
+        this.gameOver = new Foe("img/gameOver.gif",0,0,600,300,-1200,0);
         this.gameOver.getImageView().setFitHeight(400);
         this.gameOver.getImageView().setFitWidth(800);
+        this.restart = new Foe("img/restart.png",0,0,320,320,730,-60);
+        this.restart.getImageView().setFitHeight(50);
+        this.restart.getImageView().setFitWidth(50);
         //--------------------------------------------------------------------------------------------------------------
         // text
         //--------------------------------------------------------------------------------------------------------------
@@ -122,6 +127,9 @@ public class GameScene extends Scene {
         this.showMessage = new Text(320,380,"Press S to Start DBZRun");
         this.showMessage.setFont(new Font(15));
         this.showMessage.setFill(Color.WHITE);
+        this.restartMessage = new Text(735,50,"Press G");
+        this.restartMessage.setFont(new Font(12));
+        this.restartMessage.setFill(Color.BLACK);
         //--------------------------------------------------------------------------------------------------------------
         // to display all the pngs, gifs and texts
         //--------------------------------------------------------------------------------------------------------------
@@ -130,8 +138,8 @@ public class GameScene extends Scene {
                 this.hero1.getImageView(),
                 this.foe1.getImageView(), this.foe2.getImageView(), this.foe3.getImageView(),
                 this.hart1.getImageView(),this.hart2.getImageView(), this.hart3.getImageView(),
-                this.gameOver.getImageView(), this.start.getImageView(),
-                this.showLevel, this.showMessage);
+                this.gameOver.getImageView(), this.start.getImageView(), this.restart.getImageView(),
+                this.showLevel, this.showMessage, this.restartMessage);
         //--------------------------------------------------------------------------------------------------------------
         // timer
         //--------------------------------------------------------------------------------------------------------------
@@ -154,7 +162,7 @@ public class GameScene extends Scene {
         private int prevLifePoint;
         private int rep = 0;
         private int prevRep = 0;
-        private int nbJump = 0; //  indicates the number of jump done
+        private int flagJump = 0; // flag to indicate if hero has already jump or no
         private double rd1; // random number for foe1 x position
         private double rd2; // random number for foe2 x position
         private double rd3; // random number for foe3 x position
@@ -240,20 +248,19 @@ public class GameScene extends Scene {
                     foe2.setOffsetXFrame(600);
                     foe1.getImageView().setX(foe1.getOffsetXFrame());
                     foe2.getImageView().setX(foe2.getOffsetXFrame());
-                    System.out.println("vhvhvhhvh"+" "+foe1.getImageView().getX());
-                    System.out.println("vhvhvhuuuuu :"+" "+foe2.getImageView().getX());
                     start.getImageView().setX(-1200);
+                    restart.getImageView().setY(0);
                     hero1.setVx(5);
                     hero1.setAttitude(0);}
                 if (event2.getCode() == KeyCode.SPACE)
                 {System.out.println("Jump");
-                    this.nbJump += 1;
+                    this.flagJump = 1;
                     if (hero1.getAttitude() == 0) {hero1.setAttitude(1);m += 0.2 * hero1.getVx()/5;}}
                 if (event2.getCode() == KeyCode.G)
                 {System.out.println("Restart");
                     hero1.setLifePoint(-1);}
                 if (event2.getCode() == KeyCode.R && hero1.getLifePoint()<0){
-                    this.nbJump = 0;
+                    this.flagJump = 0;
                     this.m = 8;
                     // images positions
                     //--------------------------------------------------------------------------------------------------
@@ -304,26 +311,35 @@ public class GameScene extends Scene {
             if (hero1.getLifePoint()<0) {
                 hero1.setVx(0);
                 hero1.setAttitude(3);
+                restart.getImageView().setY(-60); // hide restart image when it's game over
                 gameOver.getImageView().setX(0); // show Game Over
+                restartMessage.setText(" ");
+                restartMessage.getText();
                 showMessage.setText("Press R to Restart");
                 showMessage.getText();
             }
             else {
+                restartMessage.setText("Press G");
+                restartMessage.getText();
                 if(hero1.getVx()==0){
                     showMessage.setText("Press S to Start DBZRun");
                     showMessage.getText();
                 }
-                else if(hero1.getVx()!=0 & nbJump==0){
+                else if(hero1.getVx()!=0 & flagJump==0){
+                    showMessage.setX(300);
+                    showMessage.setY(200);
+                    showMessage.setFont(new Font(25));
+                    showMessage.setFill(Color.WHITE);
                     showMessage.setText("Press Space to Jump");
                     showMessage.getText();
                 }
-                else if(hero1.getVx()!=0 & nbJump==3){
-                    showMessage.setText("Press G to Give up");
-                    showMessage.getText();
-                }
                 else{
-                showMessage.setText(" ");
-                showMessage.getText();
+                    showMessage.setX(320);
+                    showMessage.setY(380);
+                    showMessage.setFont(new Font(15));
+                    showMessage.setFill(Color.WHITE);
+                    showMessage.setText(" ");
+                    showMessage.getText();
                 }
             }
             //----------------------------------------------------------------------------------------------------------
