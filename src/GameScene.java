@@ -41,9 +41,6 @@ public class GameScene extends Scene {
     private Foe foe1;
     private Foe foe2;
     private Foe foe3;
-    private double rd1; // random number for foe1 x position
-    private double rd2; // random number for foe2 x position
-    private double rd3; // random number for foe3 x position
     // hart
     private Foe hart1;
     private Foe hart2;
@@ -158,6 +155,9 @@ public class GameScene extends Scene {
         private int rep = 0;
         private int prevRep = 0;
         private int nbJump = 0; //  indicates the number of jump done
+        private double rd1; // random number for foe1 x position
+        private double rd2; // random number for foe2 x position
+        private double rd3; // random number for foe3 x position
         //--------------------------------------------------------------------------------------------------------------
 
         @Override
@@ -176,18 +176,19 @@ public class GameScene extends Scene {
             rep = (int) camera.getX() / 800;
             // give a random value to foes
             if (prevRep+1 == rep) {
-                rd1 = Math.random()*650+75;
-                rd2 = Math.random()*650+75;
-                rd3 = Math.random()*600+150;
-                foe1.distanceFoe(rd1,rd2);
-                rd1 = foe1.getRdA(); rd2 = foe1.getRdB();
+                this.rd1 = Math.random()*650+75;
+                this.rd2 = Math.random()*650+75;
+                this.rd3 = Math.random()*600+150;
+                foe1.distanceFoe(this.rd1,this.rd2);
+                this.rd1 = foe1.getRdA();
+                this.rd2 = foe1.getRdB();
                 prevRep = rep;
             }
             staticThing0.getImageView().setX(-800 - camera.getX());
             // staticThing1 and staticThing2 are my landscapes images.
             // They are displayed one after the other until the game over.
             if (Math.floorMod(rep, 2) == 0) {
-                foe3.setOffsetXFrame(rd3);
+                foe3.setOffsetXFrame(this.rd3);
                 staticThing1.getImageView().setX(800 * rep - camera.getX());
                 foe1.getImageView().setX(foe1.getOffsetXFrame() + (800 * rep) - camera.getX());
                 foe2.getImageView().setX(foe2.getOffsetXFrame() + (800 * rep) - camera.getX());
@@ -195,8 +196,8 @@ public class GameScene extends Scene {
                 foe3.getImageView().setX(foe3.getOffsetXFrame() + (800 * (rep+1)) - camera.getX());
             }
             if (Math.floorMod(rep, 2) != 0) {
-                foe1.setOffsetXFrame(rd1);
-                foe2.setOffsetXFrame(rd2);
+                foe1.setOffsetXFrame(this.rd1);
+                foe2.setOffsetXFrame(this.rd2);
                 staticThing1.getImageView().setX(800 * (rep + 1) - camera.getX());
                 foe1.getImageView().setX(foe1.getOffsetXFrame() + (800 * (rep + 1)) - camera.getX());
                 foe2.getImageView().setX(foe2.getOffsetXFrame() + (800 * (rep + 1)) - camera.getX());
@@ -247,6 +248,7 @@ public class GameScene extends Scene {
                     hero1.setLifePoint(-1);}
                 if (event2.getCode() == KeyCode.R && hero1.getLifePoint()<0){
                     this.nbJump = 0;
+                    this.m = 8;
                     // images positions
                     //--------------------------------------------------------------------------------------------------
                     start.getImageView().setX(0);
@@ -255,6 +257,9 @@ public class GameScene extends Scene {
                     //--------------------------------------------------------------------------------------------------
                     hero1.setVx(0);
                     hero1.setOffsetXFrame(100);
+                    hero1.getImageView().setX(hero1.getOffsetXFrame());
+                    hero1.setOffsetYFrame(245);
+                    hero1.getImageView().setY(hero1.getOffsetYFrame());
                     hero1.setLifePoint(hero1.getInitLifePoint());
                     hero1.getImageView().opacityProperty().setValue(1);
                     hero1.setLevel(0);
@@ -264,11 +269,11 @@ public class GameScene extends Scene {
                     // staticThings update (foes + harts)
                     //--------------------------------------------------------------------------------------------------
                     hart1.setX(30); hart2.setX(30); hart3.setX(30);
-                    rd1 = 300;
-                    rd2 = 600;
-                    foe1.setOffsetXFrame(300);
+                    this.rd1 = 300;
+                    this.rd2 = 600;
+                    foe1.setOffsetXFrame(rd1);
                     foe1.getImageView().setX(foe1.getOffsetXFrame());
-                    foe2.setOffsetXFrame(600);
+                    foe2.setOffsetXFrame(rd2);
                     foe2.getImageView().setX(foe2.getOffsetXFrame());
                     this.rep=0;
                     this.prevRep=0;
